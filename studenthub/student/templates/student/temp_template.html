@@ -5,7 +5,7 @@
 </head>
 <body>
 
-{% comment %} <h1>{{ cookie }}</h1> {% endcomment %}
+
 
 {% if form.non_field_errors %}
 <ul>
@@ -15,7 +15,7 @@
 </ul>
 {% endif %} 
 
- <form method="post">
+ <form method="post" action="{% url 'main_page' %}">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Send Feedback</button>
