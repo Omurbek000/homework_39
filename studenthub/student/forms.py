@@ -69,3 +69,5 @@ class UserLoginForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["username", "password"]
+
+#  sabak_42

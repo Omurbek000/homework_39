@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .student-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .student-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 1rem;
+    }
+
+    .student-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .student-name {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .student-email {
+      font-size: 0.95rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  
+ {% for student in students %}
+    <div class="student-card">
+        {# <img src="{{ student.photo.url }}" alt="Student Photo" class="student-photo"> #}
+        <div class="student-info">
+            <div class="student-name">{{ student.name }}</div>
+            <div class="student-email">{{ student.email }}</div>
+        </div>
+    </div>
+{% empty %}
+    <div class="student-card">
+        <div class="student-info">
+            <div class="student-name">John Doe</div>
+            <div class="student-email">john.doe@example.com</div>
+        </div>
+    </div>
+{% endfor %}
+    
+</body>
+</html>

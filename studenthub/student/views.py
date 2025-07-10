@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from student.forms import UserRegisterForm, UserLoginForm
+from .models import Student 
 
 from .forms import TempForm
 
@@ -30,6 +31,7 @@ def temp_form(request):
         form = TempForm()
 
     return render(request, "student/temp_template.html", {"form": form})
+
 
 @login_required(login_url="login")
 def main_page(request):
@@ -113,6 +115,33 @@ def login_view(request):
 def logout_view(request):
 
     logout(request)
-
+    request.session.flush()
     messages.info(request, "siz logout bolduhuz! login bolohuz!")
     return redirect("login")
+
+
+#  sabak_42
+from django.contrib.auth.decorators import permission_required
+
+@permission_required("auth.view_user", raise_exception=True)
+def admin_page_view(request):
+    return render(request, "student/admin_page.html")
+
+
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+
+class AdminPageView(TemplateView):
+    template_name = "student/admin_page.html"
+
+    permission_required = "auth.view_user"
+
+    raise_exception = True
+
+# student list
+@permission_required("auth.view_user", raise_exception=True)
+def list_student(request):
+    students = Student.objects.all()
+    
+    return render(request, "student/list_student.html", {"students": students})

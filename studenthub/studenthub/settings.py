@@ -125,3 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #  Session settings
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+# Auth settings ozubuzdun
+
+AUTH_USER_MODEL = 'student.OzubuzdunUser'
