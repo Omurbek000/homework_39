@@ -14,4 +14,6 @@ urlpatterns = [
     path("admin_page", views.AdminPageView.as_view(), name="admin_page"),
     path("admin_page_view", views.admin_page_view, name="admin_page_view"),
     path("list", views.list_student, name="list_student"),
+    # profile
+    path("profile", views.user_profile, name="user_profile"),
 ]

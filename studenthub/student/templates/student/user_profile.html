@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль пользователя</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #4b0023);
+            color: #f0f0f0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, #292929, #62002e);
+            border-radius: 20px;
+            box-shadow:
+                0 10px 20px rgba(0,0,0,0.4),
+                inset 0 0 10px rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            transform: perspective(1000px) rotateX(2deg);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-card:hover {
+            transform: perspective(1000px) rotateX(0deg) scale(1.02);
+        }
+
+        .profile-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #ffdddd;
+            border-bottom: 1px solid #80003c;
+            padding-bottom: 10px;
+        }
+
+        .profile-card p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #ffbacf;
+        }
+
+        .empty {
+            font-style: italic;
+            color: #bbbbbb;
+        }
+
+        a {
+            color: #ff70b5;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-card">
+    <h2>Профиль пользователя</h2>
+
+    <p><span class="label">Имя пользователя:</span> {{ user_profile.user.username }}</p>
+
+    {% if user_profile.info %}
+        <p><span class="label">Информация:</span> {{ user_profile.info }}</p>
+    {% else %}
+        <p><span class="label">Информация:</span> <span class="empty">не указана</span></p>
+    {% endif %}
+
+    {% if user_profile.website %}
+        <p><span class="label">Сайт:</span> <a href="{{ user_profile.website }}" target="_blank">{{ user_profile.website }}</a></p>
+    {% else %}
+        <p><span class="label">Сайт:</span> <span class="empty">не указан</span></p>
+    {% endif %}
+
+    {% if user_profile.tulgan_kun %}
+        <p><span class="label">Дата рождения:</span> {{ user_profile.tulgan_kun|date:"d.m.Y" }}</p>
+    {% else %}
+        <p><span class="label">Дата рождения:</span> <span class="empty">не указана</span></p>
+    {% endif %}
+</div>
+
+</body>
+</html>

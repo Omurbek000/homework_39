@@ -1,13 +1,16 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from student.forms import UserRegisterForm, UserLoginForm
-from .models import Student 
+from .models import Student
 
 from .forms import TempForm
 
+# sabak_43
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
 # Create your views here.
 
 
@@ -83,14 +86,17 @@ def register(request):
             user.save()
 
             messages.success(request, "siz registration bolduhuz! login bolohuz!")
-            return redirect("login")
+            return redirect("login_view")
     else:
         form = UserRegisterForm()
 
     return render(request, "student/register.html", {"form": form})
 
 
-def login_view(request):
+from django.http import HttpRequest
+
+
+def login_view(request: HttpRequest):
     if request.method == "POST":
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -103,7 +109,9 @@ def login_view(request):
                 login(request, user)
 
             messages.success(request, "siz login bolduhuz! login bolohuz!")
-            return redirect("main_page")
+            request.session["login"] = True
+            request.session["current_user_name"] = username
+            return redirect("user_profile")
         else:
             messages.error(request, "tura emes username jana password ")
     else:
@@ -123,6 +131,7 @@ def logout_view(request):
 #  sabak_42
 from django.contrib.auth.decorators import permission_required
 
+
 @permission_required("auth.view_user", raise_exception=True)
 def admin_page_view(request):
     return render(request, "student/admin_page.html")
@@ -139,9 +148,27 @@ class AdminPageView(TemplateView):
 
     raise_exception = True
 
-# student list
-@permission_required("auth.view_user", raise_exception=True)
+
+# # student list
+# @permission_required("auth.view_user", raise_exception=True)
 def list_student(request):
-    students = Student.objects.all()
-    
-    return render(request, "student/list_student.html", {"students": students})
+    if request.user.has_perm("student.student.access"):
+        students = Student.objects.all()
+        return render(request, "student/list_student.html", {"students": students})
+    else:
+        return HttpResponseForbidden("dostup jok.")
+
+
+from .models import UserProfile, CustomUser
+from django.shortcuts import get_object_or_404
+
+
+# user profile view
+@login_required(login_url="login")
+def user_profile(request):
+    user = get_object_or_404(CustomUser, username=request.user)
+    user_profile = get_object_or_404(UserProfile, user=user)
+
+    return render(
+        request, "student/user_profile.html", {"user_profile": user_profile}
+    )

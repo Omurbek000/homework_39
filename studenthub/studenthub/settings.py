@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-j4^z2aopt1ycvhyhvutyfei+&avt($n8e3$#pc(io79=7&1=$g
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+AUTH_USER_MODEL = 'student.CustomUser'
 
 # Application definition
 
@@ -128,4 +128,3 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # Auth settings ozubuzdun
 
-AUTH_USER_MODEL = 'student.OzubuzdunUser'
